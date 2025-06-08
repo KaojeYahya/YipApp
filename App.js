@@ -9,6 +9,7 @@ import { store } from './redux/store';
 import { setUser, clearUser } from './redux/authSlice';
 import Entypo from '@expo/vector-icons/Entypo';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 
 import HomeScreen from './screens/HomeScreen';
@@ -19,10 +20,8 @@ import PostScreen from './screens/PostScreen';
 import { cleanFirebaseUser } from './utils/cleanUser';
 import Toast from 'react-native-toast-message';
 
-
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
-
 
 function MyTabs() {
   return (
@@ -34,7 +33,7 @@ function MyTabs() {
       }}
     >
       <Tab.Screen
-        name="home"
+        name="Home"
         component={HomeScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -43,7 +42,7 @@ function MyTabs() {
         }}
       />
       <Tab.Screen
-        name="post"
+        name="Post"
         component={PostScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -52,7 +51,7 @@ function MyTabs() {
         }}
       />
       <Tab.Screen
-        name="profile"
+        name="Profile"
         component={ProfileScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -69,9 +68,7 @@ function RootNavigator({ isLoggedIn }) {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {isLoggedIn ? (
         <>
-          <Stack.Screen name="Home" component={MyTabs} />
-          <Stack.Screen name="Post" component={PostScreen} />
-          <Stack.Screen name="Profile" component={ProfileScreen} />
+          <Stack.Screen name="HomeTabs" component={MyTabs} />
         </>
       ) : (
         <>
@@ -99,7 +96,7 @@ function AppWithAuth() {
       }
     });
     return unsubscribe;
-  }, []);
+  }, [dispatch]);
 
   if (isLoggedIn === null) {
     return null;
@@ -114,9 +111,11 @@ function AppWithAuth() {
 
 export default function App() {
   return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
     <Provider store={store}>
       <AppWithAuth />
       <Toast />
     </Provider>
+    </GestureHandlerRootView>
   );
 }
